@@ -55,7 +55,9 @@ ggplot() +
                color="black") +
   theme_void() +
   labs(title = "Tree Density in NYC",
-       fill = "Number of Trees") 
+       fill = "Number of Trees")+
+  theme(legend.position = c(0.2, 0.7),
+        plot.title = element_text(hjust=0.2))
 
 # NOTE: neighborhood names do not match perfectly, so some empty neighborhoods
 # CONSIDER: may change to a dot density map
@@ -98,15 +100,14 @@ tree_damage$problem_type <- recode(tree_damage$problem_type,
                                    root_other = "Other Root Problems")
 
 tree_damage %>%
-  ggplot(aes(x = problem_type, y = average_dbh)) +
+  ggplot(aes(x = average_dbh, y = fct_reorder(problem_type, average_dbh))) +
   geom_bar(stat = "identity", aes(fill = problem_type)) +
   labs(title = "Tree Diameter by Problem Type",
        x = "Problem Type",
-       y = "Average Tree Diameter") +
-  theme(legend.position = "none") +
-  theme(axis.text.x = element_text(angle = 60, hjust=1))
-
-
+       y = "Average Tree Diameter in (cm/m??)") +
+  theme_minimal()+
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = -0.5))
 ```
 
 ```{r species type, warning=FALSE, message=FALSE}
